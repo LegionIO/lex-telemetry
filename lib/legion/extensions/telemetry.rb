@@ -7,6 +7,7 @@ require 'legion/extensions/telemetry/parsers/base'
 require 'legion/extensions/telemetry/parsers/claude_code'
 require 'legion/extensions/telemetry/helpers/event_store'
 require 'legion/extensions/telemetry/helpers/stats'
+require 'legion/extensions/telemetry/runners/telemetry'
 
 module Legion
   module Extensions
