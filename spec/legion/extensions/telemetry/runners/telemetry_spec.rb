@@ -95,4 +95,21 @@ RSpec.describe Legion::Extensions::Telemetry::Runners::Telemetry do
       expect(result).to have_key(:pending_count)
     end
   end
+
+  describe '.collect' do
+    it 'returns success with counts' do
+      result = runner.collect
+      expect(result[:success]).to be true
+      expect(result).to have_key(:files_processed)
+      expect(result).to have_key(:events_ingested)
+    end
+  end
+
+  describe '.publish_pending' do
+    it 'returns published count when empty' do
+      result = runner.publish_pending
+      expect(result[:success]).to be true
+      expect(result[:published]).to eq(0)
+    end
+  end
 end
