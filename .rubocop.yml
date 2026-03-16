@@ -57,3 +57,11 @@ Gemspec/DevelopmentDependencies:
 
 Metrics/ParameterLists:
   Enabled: false
+
+Lint/EmptyClass:
+  Exclude:
+    - 'spec/**/*'
+
+Style/MultilineIfModifier:
+  Exclude:
+    - 'spec/**/*'
