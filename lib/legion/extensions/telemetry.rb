@@ -5,6 +5,8 @@ require 'legion/extensions/telemetry/helpers/telemetry_event'
 require 'legion/extensions/telemetry/helpers/scrubber'
 require 'legion/extensions/telemetry/parsers/base'
 require 'legion/extensions/telemetry/parsers/claude_code'
+require 'legion/extensions/telemetry/helpers/event_store'
+require 'legion/extensions/telemetry/helpers/stats'
 
 module Legion
   module Extensions
