@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 require 'legion/extensions/telemetry/version'
+require 'legion/extensions/telemetry/helpers/telemetry_event'
+require 'legion/extensions/telemetry/helpers/scrubber'
 
 module Legion
   module Extensions
