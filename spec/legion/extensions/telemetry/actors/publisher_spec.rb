@@ -16,7 +16,7 @@ end
 
 require 'legion/extensions/telemetry/actors/publisher'
 
-RSpec.describe Legion::Extensions::Telemetry::Actors::Publisher do
+RSpec.describe Legion::Extensions::Telemetry::Actor::Publisher do
   subject(:actor) { described_class.new }
 
   it 'runs every 60 seconds' do

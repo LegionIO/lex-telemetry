@@ -14,7 +14,7 @@ end
 
 require 'legion/extensions/telemetry/actors/collector'
 
-RSpec.describe Legion::Extensions::Telemetry::Actors::Collector do
+RSpec.describe Legion::Extensions::Telemetry::Actor::Collector do
   subject(:actor) { described_class.new }
 
   it 'runs every 300 seconds' do

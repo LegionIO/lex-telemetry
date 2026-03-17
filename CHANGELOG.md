@@ -1,5 +1,13 @@
 # Changelog
 
+## [Unreleased]
+
+## [0.1.1] - 2026-03-17
+
+### Changed
+- Renamed `module Actors` to `module Actor` (singular) in collector and publisher actors
+- Updated specs to reference `Actor::Collector` and `Actor::Publisher` accordingly
+
 ## [0.1.0] - 2026-03-15
 
 ### Added

@@ -3,7 +3,7 @@
 module Legion
   module Extensions
     module Telemetry
-      module Actors
+      module Actor
         class Publisher < Legion::Extensions::Actors::Every
           def runner_class
             'Legion::Extensions::Telemetry::Runners::Telemetry'
