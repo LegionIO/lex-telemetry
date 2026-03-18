@@ -10,7 +10,7 @@ Core Legion Extension that ingests AI tool session logs (Claude Code JSONL), nor
 
 **GitHub**: https://github.com/LegionIO/lex-telemetry
 **License**: MIT
-**Version**: 0.1.0
+**Version**: 0.1.1
 
 ## Architecture
 
