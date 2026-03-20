@@ -1,8 +1,8 @@
 # lex-telemetry: Session Log Analytics for LegionIO
 
 **Repository Level 3 Documentation**
-- **Parent (Level 2)**: `/Users/miverso2/rubymine/legion/extensions-core/CLAUDE.md`
-- **Parent (Level 1)**: `/Users/miverso2/rubymine/legion/CLAUDE.md`
+- **Parent**: `/Users/miverso2/rubymine/legion/extensions-core/CLAUDE.md`
+- **Grandparent**: `/Users/miverso2/rubymine/legion/CLAUDE.md`
 
 ## Purpose
 
