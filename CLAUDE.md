@@ -102,7 +102,7 @@ Unknown tools: all input stripped at standard level.
 
 ## Design Doc
 
-`docs/plans/2026-03-15-session-log-analytics-design.md`
+`docs/work/completed/2026-03-15-session-log-analytics-design.md`
 
 ## Development
 
