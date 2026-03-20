@@ -1,6 +1,10 @@
 # Changelog
 
-## [Unreleased]
+## [0.1.2] - 2026-03-20
+
+### Added
+- Enterprise privacy mode: `publish_pending` suppresses AMQP publishing when `enterprise_data_privacy` is enabled
+- `privacy_mode?` helper checks `Legion::Settings.enterprise_privacy?` with `LEGION_ENTERPRISE_PRIVACY` env fallback
 
 ## [0.1.1] - 2026-03-17
 

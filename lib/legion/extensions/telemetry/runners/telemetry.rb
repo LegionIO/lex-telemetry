@@ -62,6 +62,13 @@ module Legion
           end
 
           def publish_pending(**_opts)
+            if privacy_mode?
+              count = event_store.pending.length
+              Legion::Logging.info "lex-telemetry: privacy mode active, suppressing #{count} pending events (local logging only)" if defined?(Legion::Logging)
+              event_store.pending.clear
+              return { success: true, published: 0, suppressed: true, reason: 'enterprise_data_privacy is enabled' }
+            end
+
             events = event_store.flush_pending
             return { success: true, published: 0 } if events.empty?
 
@@ -120,6 +127,14 @@ module Legion
             { success: true, files_processed: files_processed, events_ingested: events_ingested }
           rescue StandardError => e
             { success: false, error: e.message }
+          end
+
+          def privacy_mode?
+            if defined?(Legion::Settings) && Legion::Settings.respond_to?(:enterprise_privacy?)
+              Legion::Settings.enterprise_privacy?
+            else
+              ENV['LEGION_ENTERPRISE_PRIVACY'] == 'true'
+            end
           end
 
           def reset!
