@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.1.3] - 2026-03-21
+
+### Added
+- `region_metrics` runner method: reports current region, primary, failover, peers, affinity, and is_primary status
+- `RegionReporter` actor: publishes region metrics every 120 seconds
+
 ## [0.1.2] - 2026-03-20
 
 ### Added

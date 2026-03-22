@@ -129,6 +129,41 @@ module Legion
             { success: false, error: e.message }
           end
 
+          def region_metrics(**_opts)
+            region_info = if defined?(Legion::Region)
+                            {
+                              current:  Legion::Region.current,
+                              primary:  Legion::Region.primary,
+                              failover: Legion::Region.failover,
+                              peers:    Legion::Region.peers
+                            }
+                          else
+                            { current: nil, primary: nil, failover: nil, peers: [] }
+                          end
+
+            affinity = if defined?(Legion::Settings)
+                         begin
+                           Legion::Settings.dig(:region, :default_affinity)
+                         rescue StandardError
+                           'prefer_local'
+                         end
+                       else
+                         'prefer_local'
+                       end
+
+            is_primary = region_info[:current] && region_info[:current] == region_info[:primary]
+
+            {
+              success:          true,
+              region:           region_info,
+              default_affinity: affinity,
+              is_primary:       is_primary,
+              timestamp:        Time.now.to_i
+            }
+          rescue StandardError => e
+            { success: false, error: e.message }
+          end
+
           def privacy_mode?
             if defined?(Legion::Settings) && Legion::Settings.respond_to?(:enterprise_privacy?)
               Legion::Settings.enterprise_privacy?
