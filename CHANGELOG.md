@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.1.4] - 2026-03-21
+
+### Added
+- `record_cross_region(from_region:, to_region:)`: thread-safe atomic counter for cross-region message routing
+- `record_replication_lag(region:, lag_seconds:)`: stores latest replication lag sample per region
+- `region_stats`: returns cross-region counters and replication lag samples
+- `concurrent-ruby` runtime dependency for `Concurrent::AtomicFixnum` and `Concurrent::Hash`
+- Subscription actor now records cross-region metrics when lex-telemetry is loaded
+
+### Changed
+- `RegionReporter` actor interval reduced from 120s to 60s
+- `RegionReporter` now calls `region_stats` instead of `region_metrics`
+
 ## [0.1.3] - 2026-03-21
 
 ### Added

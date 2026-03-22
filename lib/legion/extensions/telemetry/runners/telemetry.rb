@@ -1,11 +1,41 @@
 # frozen_string_literal: true
 
+require 'concurrent'
+
 module Legion
   module Extensions
     module Telemetry
       module Runners
         module Telemetry
           module_function
+
+          def cross_region_counters
+            @cross_region_counters ||= Concurrent::Hash.new { |h, k| h[k] = Concurrent::AtomicFixnum.new(0) }
+          end
+
+          def replication_lag_samples
+            @replication_lag_samples ||= Concurrent::Hash.new
+          end
+
+          def record_cross_region(from_region:, to_region:, **_opts)
+            key = "#{from_region}->#{to_region}"
+            cross_region_counters[key].increment
+            { success: true, key: key, count: cross_region_counters[key].value }
+          end
+
+          def record_replication_lag(region:, lag_seconds:, **_opts)
+            replication_lag_samples[region] = { lag_seconds: lag_seconds, recorded_at: Time.now.to_i }
+            { success: true, region: region, lag_seconds: lag_seconds }
+          end
+
+          def region_stats(**_opts)
+            {
+              success:         true,
+              cross_region:    cross_region_counters.transform_values(&:value),
+              replication_lag: replication_lag_samples.dup,
+              timestamp:       Time.now.to_i
+            }
+          end
 
           SCAN_DIRS = [
             File.expand_path('~/.claude/projects')
@@ -176,6 +206,8 @@ module Legion
             @event_store = nil
             @parsers = nil
             @high_water_mark = nil
+            @cross_region_counters = nil
+            @replication_lag_samples = nil
           end
         end
       end

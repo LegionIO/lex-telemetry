@@ -10,11 +10,11 @@ module Legion
           end
 
           def runner_function
-            'region_metrics'
+            'region_stats'
           end
 
           def time
-            120
+            60
           end
 
           def run_now?
