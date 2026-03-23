@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.1.5] - 2026-03-22
+
+### Changed
+- Added sub-gem runtime dependencies: legion-cache, legion-crypt, legion-data, legion-json, legion-logging, legion-settings, legion-transport
+- Replaced inline stub definitions in spec_helper with real sub-gem helpers (Tier 1 migration)
+- Transport spec subjects switched from `.new` to `.allocate` to avoid live AMQP channel requirement in tests
+- Removed per-file `Legion::Extensions::Actors::Every` and `Legion::Transport::*` stubs; actor stubs now defined once in spec_helper via sub-gem helpers
+
 ## [0.1.4] - 2026-03-21
 
 ### Added

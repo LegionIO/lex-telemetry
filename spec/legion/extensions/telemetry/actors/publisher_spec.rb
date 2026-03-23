@@ -2,18 +2,6 @@
 
 require 'spec_helper'
 
-unless defined?(Legion::Extensions::Actors::Every)
-  module Legion
-    module Extensions
-      module Actors
-        class Every
-          def time = nil
-        end
-      end
-    end
-  end
-end
-
 require 'legion/extensions/telemetry/actors/publisher'
 
 RSpec.describe Legion::Extensions::Telemetry::Actor::Publisher do
