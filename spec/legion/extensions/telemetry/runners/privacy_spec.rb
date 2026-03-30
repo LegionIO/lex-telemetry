@@ -53,7 +53,7 @@ RSpec.describe 'Telemetry::Runners::Telemetry privacy mode' do
   context 'when enterprise privacy is enabled via ENV' do
     before do
       # Remove any existing Settings stub
-      if Legion.const_defined?('Settings')
+      if Legion.const_defined?('Settings', false)
         # Settings doesn't respond to enterprise_privacy? in this test context
         allow(Legion::Settings).to receive(:respond_to?).with(:enterprise_privacy?).and_return(false)
       end
