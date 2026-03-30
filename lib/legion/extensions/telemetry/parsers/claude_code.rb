@@ -18,11 +18,11 @@ module Legion
             first_line = File.open(path, &:readline)
             data = ::JSON.parse(first_line)
             data.is_a?(Hash) && (data.key?('sessionId') || data.key?('parentUuid'))
-          rescue StandardError
+          rescue StandardError => _e
             false
           end
 
-          def parse(path, offset: 0, &block)
+          def parse(path, offset: 0, &)
             pending_tools = {}
             session_id = nil
 
@@ -36,13 +36,13 @@ module Legion
 
                 if first_line && offset.zero?
                   session_id = data['sessionId'] || data['uuid'] || SecureRandom.uuid
-                  block.call(Helpers::TelemetryEvent.build(
-                               event_type: :session_start,
-                               session_id: session_id,
-                               source:     source_name,
-                               timestamp:  timestamp,
-                               metadata:   { version: data['version'] }
-                             ))
+                  yield(Helpers::TelemetryEvent.build(
+                    event_type: :session_start,
+                    session_id: session_id,
+                    source:     source_name,
+                    timestamp:  timestamp,
+                    metadata:   { version: data['version'] }
+                  ))
                   first_line = false
                   next
                 end
@@ -51,9 +51,9 @@ module Legion
                 msg = data['message']
                 next unless msg.is_a?(Hash)
 
-                process_assistant(msg, session_id, timestamp, pending_tools, &block) if msg['role'] == 'assistant'
-                process_tool_result(msg, session_id, timestamp, pending_tools, &block) if msg['role'] == 'user'
-              rescue ::JSON::ParserError
+                process_assistant(msg, session_id, timestamp, pending_tools, &) if msg['role'] == 'assistant'
+                process_tool_result(msg, session_id, timestamp, pending_tools, &) if msg['role'] == 'user'
+              rescue ::JSON::ParserError => _e
                 next
               end
 
@@ -63,7 +63,7 @@ module Legion
 
           private
 
-          def process_assistant(msg, session_id, timestamp, pending_tools, &block)
+          def process_assistant(msg, session_id, timestamp, pending_tools)
             content = msg['content']
             usage = msg['usage']
 
@@ -85,16 +85,16 @@ module Legion
             has_tool_use = content.is_a?(Array) && content.any? { |b| b['type'] == 'tool_use' }
             return if has_tool_use
 
-            block.call(Helpers::TelemetryEvent.build(
-                         event_type: :llm_request,
-                         session_id: session_id,
-                         source:     source_name,
-                         timestamp:  timestamp,
-                         tokens:     extract_tokens(usage)
-                       ))
+            yield(Helpers::TelemetryEvent.build(
+              event_type: :llm_request,
+              session_id: session_id,
+              source:     source_name,
+              timestamp:  timestamp,
+              tokens:     extract_tokens(usage)
+            ))
           end
 
-          def process_tool_result(msg, session_id, timestamp, pending_tools, &block)
+          def process_tool_result(msg, session_id, timestamp, pending_tools)
             content = msg['content']
             return unless content.is_a?(Array)
 
@@ -106,16 +106,16 @@ module Legion
 
               duration_ms = ((timestamp - pending[:timestamp]) * 1000).to_i if timestamp && pending[:timestamp]
 
-              block.call(Helpers::TelemetryEvent.build(
-                           event_type:  :tool_call,
-                           session_id:  session_id,
-                           source:      source_name,
-                           timestamp:   pending[:timestamp],
-                           tool_name:   pending[:tool_name],
-                           tool_input:  pending[:tool_input],
-                           duration_ms: duration_ms,
-                           tokens:      pending[:tokens]
-                         ))
+              yield(Helpers::TelemetryEvent.build(
+                event_type:  :tool_call,
+                session_id:  session_id,
+                source:      source_name,
+                timestamp:   pending[:timestamp],
+                tool_name:   pending[:tool_name],
+                tool_input:  pending[:tool_input],
+                duration_ms: duration_ms,
+                tokens:      pending[:tokens]
+              ))
             end
           end
 
@@ -134,7 +134,7 @@ module Legion
             return nil unless str
 
             Time.parse(str)
-          rescue ArgumentError
+          rescue ArgumentError => _e
             nil
           end
 
