@@ -28,7 +28,7 @@ RSpec.describe Legion::Extensions::Telemetry::Runners::Telemetry do
     end
 
     it 'is thread-safe' do
-      threads = 10.times.map do
+      threads = Array.new(10) do
         Thread.new do
           50.times { runner.record_cross_region(from_region: 'us-east-2', to_region: 'us-west-2') }
         end

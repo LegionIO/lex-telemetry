@@ -13,7 +13,7 @@ require 'legion/extensions/telemetry/runners/telemetry'
 module Legion
   module Extensions
     module Telemetry
-      extend Legion::Extensions::Core if Legion::Extensions.const_defined? :Core
+      extend Legion::Extensions::Core if Legion::Extensions.const_defined? :Core, false
 
       def self.remote_invocable?
         false

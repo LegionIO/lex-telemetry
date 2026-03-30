@@ -94,7 +94,7 @@ module Legion
           def publish_pending(**_opts)
             if privacy_mode?
               count = event_store.pending.length
-              Legion::Logging.info "lex-telemetry: privacy mode active, suppressing #{count} pending events (local logging only)" if defined?(Legion::Logging)
+              Legion::Logging.info "lex-telemetry: privacy mode active, suppressing #{count} pending events (local logging only)" # rubocop:disable Legion/HelperMigration/DirectLogging
               event_store.pending.clear
               return { success: true, published: 0, suppressed: true, reason: 'enterprise_data_privacy is enabled' }
             end
@@ -109,7 +109,7 @@ module Legion
                 Transport::Messages::TelemetryMessage.new.publish(event, routing_key: routing_key)
                 published += 1
               end
-            rescue StandardError
+            rescue StandardError => _e
               event_store.pending.push(event)
             end
 
@@ -149,7 +149,7 @@ module Legion
                 high_water_mark.set(path: path, offset: new_offset)
                 files_processed += 1
                 events_ingested += count
-              rescue StandardError
+              rescue StandardError => _e
                 next
               end
             end
@@ -174,7 +174,7 @@ module Legion
             affinity = if defined?(Legion::Settings)
                          begin
                            Legion::Settings.dig(:region, :default_affinity)
-                         rescue StandardError
+                         rescue StandardError => _e
                            'prefer_local'
                          end
                        else
