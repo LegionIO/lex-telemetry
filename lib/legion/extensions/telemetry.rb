@@ -8,6 +8,7 @@ require 'legion/extensions/telemetry/parsers/claude_code'
 require 'legion/extensions/telemetry/helpers/event_store'
 require 'legion/extensions/telemetry/helpers/stats'
 require 'legion/extensions/telemetry/helpers/high_water_mark'
+require 'legion/extensions/telemetry/helpers/subsystem_stats'
 require 'legion/extensions/telemetry/runners/telemetry'
 
 module Legion

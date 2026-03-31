@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.8] - 2026-03-31
+
+### Added
+- `StatsReporter` actor (Every 60s): periodically calls `system_stats` to collect and ship aggregate subsystem metrics
+- `system_stats` runner method: collects stats from Transport, Cache, Data, LLM, Extensions, and GAIA subsystems; publishes via telemetry exchange
+- `Helpers::SubsystemStats`: per-subsystem collectors with graceful guards (returns nil when subsystem not loaded)
+
 ## [0.1.7] - 2026-03-30
 
 ### Changed
