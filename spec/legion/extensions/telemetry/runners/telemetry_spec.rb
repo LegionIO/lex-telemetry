@@ -5,6 +5,7 @@ require 'legion/extensions/telemetry/helpers/telemetry_event'
 require 'legion/extensions/telemetry/helpers/scrubber'
 require 'legion/extensions/telemetry/helpers/event_store'
 require 'legion/extensions/telemetry/helpers/stats'
+require 'legion/extensions/telemetry/helpers/subsystem_stats'
 require 'legion/extensions/telemetry/parsers/base'
 require 'legion/extensions/telemetry/parsers/claude_code'
 require 'legion/extensions/telemetry/runners/telemetry'
@@ -110,6 +111,26 @@ RSpec.describe Legion::Extensions::Telemetry::Runners::Telemetry do
       result = runner.publish_pending
       expect(result[:success]).to be true
       expect(result[:published]).to eq(0)
+    end
+  end
+
+  describe '.system_stats' do
+    it 'returns success with a stats hash' do
+      result = runner.system_stats
+      expect(result[:success]).to be true
+      expect(result[:stats]).to be_a(Hash)
+    end
+
+    it 'includes a timestamp in stats' do
+      result = runner.system_stats
+      expect(result[:stats][:timestamp]).to be_a(Integer)
+    end
+
+    it 'omits nil subsystem entries' do
+      result = runner.system_stats
+      result[:stats].each_value do |v|
+        expect(v).not_to be_nil
+      end
     end
   end
 end

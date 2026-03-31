@@ -202,6 +202,31 @@ module Legion
             end
           end
 
+          def system_stats(**_opts)
+            stats = {
+              transport:  Helpers::SubsystemStats.collect_transport,
+              cache:      Helpers::SubsystemStats.collect_cache,
+              data:       Helpers::SubsystemStats.collect_data,
+              llm:        Helpers::SubsystemStats.collect_llm,
+              extensions: Helpers::SubsystemStats.collect_extensions,
+              gaia:       Helpers::SubsystemStats.collect_gaia,
+              timestamp:  Time.now.to_i
+            }.compact
+
+            begin
+              if defined?(Legion::Extensions::Telemetry::Transport::Messages::TelemetryMessage)
+                payload = { event_type: :system_stats, source: :system, data: stats }
+                Transport::Messages::TelemetryMessage.new.publish(payload)
+              end
+            rescue StandardError => _e
+              nil
+            end
+
+            { success: true, stats: stats }
+          rescue StandardError => e
+            { success: false, error: e.message }
+          end
+
           def reset!
             @event_store = nil
             @parsers = nil
